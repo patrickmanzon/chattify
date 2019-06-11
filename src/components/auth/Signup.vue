@@ -4,7 +4,7 @@
 			<h3 class="deep-purple-text center">Sign up</h3>
 			<div class="field">
 				<label for="username">Username:</label>
-				<input type="text" name="username" v-model="username">
+				<input type="text" name="username" v-model="username" @keydown.space.prevent>
 			</div>
 			<div class="field">
 				<label for="email">Email:</label>
@@ -57,10 +57,21 @@
 					return
 				}
 
+				let ref = db.collection('users').doc(this.username)
+
+				ref.get().then(doc => {
+
+					if(doc.exists){
+						this.feedback = 'Username is taken'
+					}
+
+				})
+
+
 				if(this.username && this.username && this.email && this.password){
 					firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
 					.then(cred => {
-						console.log(cred.user)
+	
 					}).catch(err => {
 						this.feedback = err.message
 					})

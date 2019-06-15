@@ -81,7 +81,7 @@
 			</div>
 			<div class="field">
 				<label for="password">Confirm Password:</label>
-				<input type="password" name="password" v-model="confirmPassword" @keypress="checkPassword">
+				<input type="password" name="password" v-model="confirmPassword" @keydown="checkPassword">
 			</div>
 			<p class="red-text center" v-if="feedback">{{ feedback }}</p>
 			<div class="field center">
@@ -116,30 +116,39 @@
 
 			signUp(){
 
-				console.log(1)
 				if(this.password != this.confirmPassword){
 					this.feedback = 'passwords do not match'
 					return
 				}
-
-				let ref = db.collection('users').doc(this.username)
-
-				ref.get().then(doc => {
-
-					if(doc.exists){
-						this.feedback = 'Username is taken'
-					}
-
-				})
-
-
 				if(this.username && this.username && this.email && this.password){
-					firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
-					.then(cred => {
-	
-					}).catch(err => {
-						this.feedback = err.message
+					
+					let ref = db.collection('users').doc(this.username)
+
+					ref.get().then(doc => {
+
+						if(doc.exists){
+							this.feedback = 'Username is taken'
+						}else{
+							firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+							.then(cred => {
+
+								ref.set({
+									user_id: cred.user.uid
+								}).then(() => {
+									
+								})
+			
+							}).catch(err => {
+								this.feedback = err.message
+							})
+
+						}
+
 					})
+				
+				
+				}else{
+					this.feedback = 'Fields are empty'
 				}
 			}
 		}

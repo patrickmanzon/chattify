@@ -19,13 +19,7 @@ const routes = new Router({
       path: '/signup',
       name: 'Signup',
       component: Signup
-<<<<<<< HEAD
-    }
-=======
     },
-<<<<<<< HEAD
->>>>>>> fbdb8db9b2c74c20b0dc1724719714be5f816e17
-=======
     {
       path: '/home',
       name: 'Home',
@@ -39,7 +33,6 @@ const routes = new Router({
       name: 'Signin',
       component: Signin,
     },
->>>>>>> 6a69fc54d6c399f2dd623767fc4f2e1aa4337f47
   ]
 })
 
